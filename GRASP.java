@@ -37,7 +37,7 @@ public class GRASP {
     /**
      * Create a list of candidates with incremental score less than or equal to the
      * alpha value
-     * 
+     *
      * @param candidates    Full set of candidates
      * @param computedAlpha Computed alpha value alpha * (max - min)
      * @return Set of candidates that meet the alpha criteria
@@ -54,7 +54,7 @@ public class GRASP {
     /**
      * calculate costs for all candidates based on their impact on adding to the
      * square
-     * 
+     *
      * @param candidates set of candidates to calculate costs for
      * @param square     latin square candidates could be added to
      */
@@ -66,7 +66,7 @@ public class GRASP {
 
     /**
      * Update costs for candidates in the row/column combo that was modified
-     * 
+     *
      * @param candidates set of candidates to update costs for
      * @param addedC     candidate most recently added to square
      */
@@ -80,7 +80,7 @@ public class GRASP {
 
     /**
      * Greedily construct a solution from a partial square
-     * 
+     *
      * @param square partial square to construct from
      * @param alpha  level of greed, 1: full random, 0: full greed
      * @return constructed latin square solution
@@ -89,8 +89,6 @@ public class GRASP {
         Random rand = new Random();
         // generate candidate set
         Set<Candidate> allCandidates = generateGroundCandidateSet(square);
-        // incremental costs
-        incrementalCosts(allCandidates, square);
         while (!allCandidates.isEmpty()) {
             // compute best and worst incremental costs
             int minCost = Integer.MAX_VALUE;
@@ -141,7 +139,7 @@ public class GRASP {
 
     /**
      * Swap two treatments, minimizes costs
-     * 
+     *
      * @param commonTreatment a common (occurs more than square.size times)
      *                        treatment to be replaced with a rare treatment
      * @param rareTreatment   a rare (occurs less than square.size times) treatment
@@ -184,7 +182,7 @@ public class GRASP {
 
     /**
      * Repair solution if needed
-     * 
+     *
      * @param square square to potentially repair
      * @return feasible square (has n of each treatment, where n is the square size)
      */
@@ -203,7 +201,7 @@ public class GRASP {
                 counts.lastElement().count += 1;
                 counts.sort(Comparator.comparingInt(Pair::getCount).reversed());
             }
-            
+
         }
         return square;
     }
@@ -259,7 +257,7 @@ public class GRASP {
             while (System.currentTimeMillis() < end && bestSquare.getScore() > 0) {
                 iterations++;
                 LatinSquare square = performIteration(original.cloneSquare(), alpha);
-                
+
                 if(square.getScore() < bestSquare.getScore()) {
                     bestIterations = iterations;
                     bestSquare = square.cloneSquare();
@@ -270,7 +268,7 @@ public class GRASP {
             while (iterations < limit && bestSquare.getScore() > 0) {
                 iterations++;
                 LatinSquare square = performIteration(original.cloneSquare(), alpha);
-                
+
                 if(square.getScore() < bestSquare.getScore()) {
                     bestIterations = iterations;
                     bestSquare = square.cloneSquare();
