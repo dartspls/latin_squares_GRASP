@@ -3,9 +3,16 @@ import java.util.Vector;
 
 public class LocalSearch {
 
+    /**
+     * Generate a neighbourhood of solutions from an initial solution.
+     * Neighbourhood structure is: each item swapped with each other item
+     * in each row and column.
+     * 
+     * @param square initial solution
+     * @return vector of neighbouring solutions
+     */
     public static Vector<LatinSquare> generateNeighbourhood(final LatinSquare square) {
         // rows
-        //System.out.println("Starting neighbourhood gen");
         Vector<LatinSquare> n = new Vector<>();
         for (int row = 0; row < square.getSize(); row ++) {
             for(int i = 0; i < square.getSize(); i ++) {
@@ -18,7 +25,6 @@ public class LocalSearch {
                 }
             }
         }
-        //System.out.println("Rows done");
 
         // cols
         for (int col = 0; col < square.getSize(); col ++){
@@ -32,19 +38,21 @@ public class LocalSearch {
                 }
             }
         }
-        //System.out.println("Cols done");
         return n;
     }
 
+    /**
+     * Perform local search on a solution. Stops when local optima is found (no improvements)
+     * @param square square to use as initial solution
+     * @return local optima
+     */
     public static LatinSquare localSearch(LatinSquare square) {
         
         LatinSquare bestSquare = square;
         int bestScore = square.getScore();
         boolean improvementMade = true;
-        int iterations = 0;
-        while(improvementMade && iterations < 5000) {
+        while(improvementMade) {
             improvementMade = false;
-
             Vector<LatinSquare> neighbourhood = generateNeighbourhood(bestSquare);
             Iterator<LatinSquare> iter = neighbourhood.iterator();
             while(iter.hasNext()) {
@@ -56,10 +64,7 @@ public class LocalSearch {
                     improvementMade = true;
                 }
             }
-            iterations ++;
-            
         }
-        //System.out.println("LS iter: "+ iterations);
         return bestSquare;
     }
 }

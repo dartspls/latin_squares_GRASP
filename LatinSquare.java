@@ -69,6 +69,11 @@ public class LatinSquare {
         }
     }
 
+    /**
+     * Creates a set of all treatments appearing in specified row
+     * @param row row to create set from
+     * @return set of treatments in row
+     */
     public Set<Integer> rowSet(int row) {
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < size; i++) {
@@ -79,6 +84,11 @@ public class LatinSquare {
         return set;
     }
 
+    /**
+     * Creates a set of all treatments appearing in specified column
+     * @param col column to create set from
+     * @return set of treatments in column
+     */
     public Set<Integer> colSet(int col) {
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < size; i++) {
@@ -107,14 +117,29 @@ public class LatinSquare {
         return dupes;
     }
 
+    /**
+     * how many duplicates appear in given row and column
+     * @param row row to check
+     * @param col column to check
+     * @param treatment treatment to search for duplicates of
+     * @return number of duplicates
+     */
     public int countDuplicates(int row, int col, int treatment) {
         return countDuplicatesRow(row, treatment) + countDuplicatesCol(col, treatment);
     }
 
+    /**
+     * replace a square item with the values of a candidate
+     * @param c candidate to add to square
+     */
     public void update(Candidate c) {
         treatments[c.row][c.col] = new SquareElement(c);
     }
 
+    /**
+     * Convert to CSV format
+     * @return array of lines of CSV
+     */
     public String[] toCsv() {
         String[] lines = new String[size];
         for (int iter = 0; iter < size; iter++) {
@@ -141,8 +166,8 @@ public class LatinSquare {
     }
 
     /**
-     * A square is feasable if each treatment appears N times in an NxN square.
-     * A feasable square does not necessarily have a score of 0.
+     * A square is feasible if each treatment appears N times in an NxN square.
+     * A feasible square does not necessarily have a score of 0.
      * 
      * @treatmentCounts array to fill with counts of each treatment. Can be null.
      * @return true if each treatment is found N many times in the square, where N =
@@ -172,6 +197,10 @@ public class LatinSquare {
         // return getScore() == 0;
     }
 
+    /**
+     * Count the number of missing treatments
+     * @return number of missing treatments in each row and column
+     */
     public int getScore() {
         int score = 0;
         for (SquareElement[] row : treatments) {
