@@ -237,7 +237,6 @@ public class GRASP extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Started");
         int iterations = 0;
         long taken = System.currentTimeMillis();
 
@@ -247,7 +246,7 @@ public class GRASP extends Thread {
 
         if (timed) {
             long end = System.currentTimeMillis() + limit * 1000;
-            while (System.currentTimeMillis() < end /*&& bestSquare.getScore() > 0*/) {
+            while (System.currentTimeMillis() < end && bestSquare.getScore() > 0) {
                 iterations++;
                 LatinSquare square = performIteration(original.cloneSquare(), alpha);
 
@@ -269,27 +268,9 @@ public class GRASP extends Thread {
             }
             taken = System.currentTimeMillis() - taken;
         }
-        System.out.println("End");
-
         to.iterations = bestIterations;
         to.square = bestSquare;
         to.timeTaken = taken;
         to.totalIteratons = iterations;
-
-        // output
-        // double improvementPercent = 1f - (bestSquare.getScore() / (double)startScore);
-
-        // System.out.println(bestSquare);
-        // System.out.println("Starting score: " + startScore);
-        // System.out.println("Best score: " + bestSquare.getScore());
-        // System.out.printf("Improved by: %.2f%s\n", (improvementPercent * 100), "%");
-        // System.out.println("Iterations to find best result: " + bestIterations);
-        // System.out.println("Total iterations: " + iterations);
-        // System.out.println("Time taken: " + (taken < 0 ? 0 : (taken / 1000.0f)));
-
-        // System.out.println("Final score: " + bestSquare.getScore() + " achieved in " + bestIterations + " iterations and "
-        //         + (taken < 0 ? 0 : (taken / 1000.0f)) + " seconds");
-        // double improvementPercent = 1f - (original.getScore() / (double)startScore);
-        // System.out.printf("Improved by: %.2f%s\n", (improvementPercent * 100), "%");
     }
 }

@@ -66,7 +66,6 @@ public class SolveLatinSquares {
                 t.join();
             }
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
 
