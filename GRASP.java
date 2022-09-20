@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GRASP {
+public class GRASP extends Thread {
 
     /**
      * Generate all valid candidates for given square
@@ -219,32 +219,24 @@ public class GRASP {
         return square;
     }
 
-    public static void run(String filename, int limit, double alpha, boolean timed) {
-        LatinSquare original;
-        try {
-            File f = new File(filename);
-            if(!f.exists()) {
-                System.out.println("No file found at: " + filename);
-                return;
-            }
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
-            int size = line.split(",").length;
-            String[] csvData = new String[size];
-            csvData[0] = line;
-            int iter = 1;
-            while ((line = reader.readLine()) != null) {
-                csvData[iter++] = line;
-            }
-            reader.close();
-            original = new LatinSquare(csvData, size);
+    public GRASP(TO to, String filename, int limit, double alpha, boolean timed, LatinSquare original) {
+        this.to = to;
+        this.filename = filename;
+        this.limit = limit;
+        this.alpha = alpha;
+        this.timed = timed;
+        this.original = original;
+    }
 
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return;
-        }
+    TO to;
+    String filename;
+    int limit;
+    double alpha;
+    boolean timed;
+    LatinSquare original;
 
-        int startScore = original.getScore();
+    @Override
+    public void run() {
         int iterations = 0;
         long taken = System.currentTimeMillis();
 
@@ -276,21 +268,9 @@ public class GRASP {
             }
             taken = System.currentTimeMillis() - taken;
         }
-
-        // output
-        double improvementPercent = 1f - (bestSquare.getScore() / (double)startScore);
-
-        System.out.println(bestSquare);
-        System.out.println("Starting score: " + startScore);
-        System.out.println("Best score: " + bestSquare.getScore());
-        System.out.printf("Improved by: %.2f%s\n", (improvementPercent * 100), "%");
-        System.out.println("Iterations to find best result: " + bestIterations);
-        System.out.println("Total iterations: " + iterations);
-        System.out.println("Time taken: " + (taken < 0 ? 0 : (taken / 1000.0f)));
-
-        // System.out.println("Final score: " + bestSquare.getScore() + " achieved in " + bestIterations + " iterations and "
-        //         + (taken < 0 ? 0 : (taken / 1000.0f)) + " seconds");
-        // double improvementPercent = 1f - (original.getScore() / (double)startScore);
-        // System.out.printf("Improved by: %.2f%s\n", (improvementPercent * 100), "%");
+        to.iterations = bestIterations;
+        to.square = bestSquare;
+        to.timeTaken = taken;
+        to.totalIteratons = iterations;
     }
 }
