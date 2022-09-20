@@ -6,3 +6,8 @@ java SolveLatinSquares partial_squares/hard.csv 30 0.1 t
 
 Latin squares generated at: https://cs.uwaterloo.ca/~dmasson/tools/latin_square/
 partial squares created by me randomly deleting cells in libre office.
+
+20/09/2022:
+Added multithreading, runs on the number of threads returned by "Runtime.getRuntime().availableProcessors()".
+On a i5 8400 results in approx 4x improvement over single threaded execution.
+Currently all threads run to completion (either reaching 0-score or hitting the time/iteration limit).
